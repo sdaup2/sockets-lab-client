@@ -1,8 +1,8 @@
 /**
- * Heartbeat for ensuring socket connection to server during periods of inactivity 
+ * Heartbeat for ensuring socket connection to server during periods of inactivity
  */
 let _heartbeat = null;
-const HEARTBEAT_FREQUENCY = 20000
+const HEARTBEAT_FREQUENCY = 20000;
 const HEARTBEAT_EXPIRATION = 30000;
 
 /**
@@ -29,7 +29,7 @@ let id = null;
 
 const production = "wss://raikes-sockets-lab-server.fly.dev";
 
-const development = "ws://localhost:8080"
+const development = "ws://localhost:8080";
 
 /**
  * the URL that the server is hosted at - you must connect to this!
@@ -59,32 +59,32 @@ let nominees = [];
  * @returns a JSON object representing the data
  */
 function dataToJSON(eventData) {
-	return JSON.parse(eventData);
+  return JSON.parse(eventData);
 }
 
 const _set_connect_button_loading = () => {
-	const button = document.getElementById("connect");
-	button.disabled = true;
-	button.style.filter = "brightness(50%)";
-	let waitTimer = 1;
-	const timeOut = setInterval(() => {
-		const dots = [...new Array((waitTimer % 3) + 1).keys()]
-			.map((_i) => ".")
-			.join("");
-		button.innerText = `Loading${dots}`;
-		waitTimer += 1;
-	}, 500);
-	return timeOut;
+  const button = document.getElementById("connect");
+  button.disabled = true;
+  button.style.filter = "brightness(50%)";
+  let waitTimer = 1;
+  const timeOut = setInterval(() => {
+    const dots = [...new Array((waitTimer % 3) + 1).keys()]
+      .map((_i) => ".")
+      .join("");
+    button.innerText = `Loading${dots}`;
+    waitTimer += 1;
+  }, 500);
+  return timeOut;
 };
 
 /**
  * UI helper to delete all nominee cards
  */
 const _delete_all_nominee_cards = () => {
-	nominees.forEach((nom) => {
-		const card = document.getElementById(`${nom.name}_card`);
-		card.remove();
-	});
+  nominees.forEach((nom) => {
+    const card = document.getElementById(`${nom.name}_card`);
+    card.remove();
+  });
 };
 
 /**
@@ -92,8 +92,8 @@ const _delete_all_nominee_cards = () => {
  * @param {HTMLButtonElement} cardNominate - the button to change
  */
 const _switch_to_nominate_button = (cardNominate) => {
-	cardNominate.style.backgroundColor = "rgb(216, 185, 82)";
-	cardNominate.innerText = "Nominate";
+  cardNominate.style.backgroundColor = "rgb(216, 185, 82)";
+  cardNominate.innerText = "Nominate";
 };
 
 /**
@@ -101,65 +101,63 @@ const _switch_to_nominate_button = (cardNominate) => {
  * @param {HTMLButtonElement} cardNominate - the button to change
  */
 const _switch_to_rescind_button = (cardNominate) => {
-	cardNominate.style.backgroundColor = "rgb(142, 124, 245)";
-	cardNominate.innerText = "Rescind";
+  cardNominate.style.backgroundColor = "rgb(142, 124, 245)";
+  cardNominate.innerText = "Rescind";
 };
 
 /**
  * lol
  */
 function fun() {
-	const wrapper = document.getElementsByClassName("wrapper")[0]
-	wrapper.remove();
-	const root = document.getElementsByTagName("body")[0];
-	root.style.backgroundImage = "none";
-	root.style.backgroundColor = "black";
-	root.style.backgroundImage = "none";
-	root.style.display = "flex";
-	root.style.justifyContent = "center";
-	root.style.alignItems = "center";
-	
-	const pTag = document.createElement("p");
-	pTag.innerText = "Nice Try";
-	pTag.style.color = "white";
-	root.appendChild(pTag);
+  const wrapper = document.getElementsByClassName("wrapper")[0];
+  wrapper.remove();
+  const root = document.getElementsByTagName("body")[0];
+  root.style.backgroundImage = "none";
+  root.style.backgroundColor = "black";
+  root.style.backgroundImage = "none";
+  root.style.display = "flex";
+  root.style.justifyContent = "center";
+  root.style.alignItems = "center";
+
+  const pTag = document.createElement("p");
+  pTag.innerText = "Nice Try";
+  pTag.style.color = "white";
+  root.appendChild(pTag);
 }
 
 /**
  * UI helper to enable or disable downvote buttons
  */
 const _updateDownvoteButtonsUI = () => {
-	console.log(_myVotes);
-	[..._myVotes.entries()].forEach((entry) => {
-		const [nomineeName, nomVotes] = entry;
-		const downvoteButton = document.getElementById(
-			`${nomineeName}_downvote`
-		);
-		if (nomVotes <= 0) {
-			downvoteButton.style.filter = "brightness(50%)";
-			downvoteButton.disabled = true;
-		} else {
-			downvoteButton.style.filter = "brightness(100%)";
-			downvoteButton.disabled = false;
-		}
-	});
+  console.log(_myVotes);
+  [..._myVotes.entries()].forEach((entry) => {
+    const [nomineeName, nomVotes] = entry;
+    const downvoteButton = document.getElementById(`${nomineeName}_downvote`);
+    if (nomVotes <= 0) {
+      downvoteButton.style.filter = "brightness(50%)";
+      downvoteButton.disabled = true;
+    } else {
+      downvoteButton.style.filter = "brightness(100%)";
+      downvoteButton.disabled = false;
+    }
+  });
 };
 
 /**
  * UI helper to enable or disable upvote buttons
  */
 const _updateUpvoteButtonsUI = () => {
-	[..._myVotes.entries()].forEach((entry) => {
-		const [nomineeName, _nomVotes] = entry;
-		const upvoteButton = document.getElementById(`${nomineeName}_upvote`);
-		if (votes <= 0) {
-			upvoteButton.style.filter = "brightness(50%)";
-			upvoteButton.disabled = true;
-		} else {
-			upvoteButton.style.filter = "brightness(100%)";
-			upvoteButton.disabled = false;
-		}
-	});
+  [..._myVotes.entries()].forEach((entry) => {
+    const [nomineeName, _nomVotes] = entry;
+    const upvoteButton = document.getElementById(`${nomineeName}_upvote`);
+    if (votes <= 0) {
+      upvoteButton.style.filter = "brightness(50%)";
+      upvoteButton.disabled = true;
+    } else {
+      upvoteButton.style.filter = "brightness(100%)";
+      upvoteButton.disabled = false;
+    }
+  });
 };
 
 /**
@@ -168,35 +166,35 @@ const _updateUpvoteButtonsUI = () => {
  * @param {boolean} disable - true if you are disabling the button, false if enabling it
  */
 const _updateNominateButtonFunctionalityForNominee = (nomineeName, disable) => {
-	const nominee = nominees.find((nom) => nom.name === nomineeName);
-	const nominateButton = document.getElementById(
-		`${nomineeName}_fetched_nominate`
-	);
-	if (nominee && nominee.nominater.id === id) {
-		nominateButton.disabled = false;
-		nominateButton.style.filter = "brightness(100%)";
-		return;
-	}
-	if (nominateButton) {
-		if (nominations <= 0) {
-			nominateButton.disabled = true;
-			nominateButton.style.filter = `brightness(100%)`;
-		}
-		nominateButton.disabled = disable;
-		nominateButton.style.filter = `brightness(${disable ? "50" : "100"}%)`;
-	}
+  const nominee = nominees.find((nom) => nom.name === nomineeName);
+  const nominateButton = document.getElementById(
+    `${nomineeName}_fetched_nominate`
+  );
+  if (nominee && nominee.nominater.id === id) {
+    nominateButton.disabled = false;
+    nominateButton.style.filter = "brightness(100%)";
+    return;
+  }
+  if (nominateButton) {
+    if (nominations <= 0) {
+      nominateButton.disabled = true;
+      nominateButton.style.filter = `brightness(100%)`;
+    }
+    nominateButton.disabled = disable;
+    nominateButton.style.filter = `brightness(${disable ? "50" : "100"}%)`;
+  }
 };
 
 /**
  * A function that sorts all nominees by votes and re-displays them on the site
  */
 function sortNominees() {
-	nominees.sort((a, b) => b.votes - a.votes);
-	_delete_all_nominee_cards();
-	console.log(nominees);
-	nominees.forEach((nom) => {
-		buildNominee(nom.name, nom.votes, nom.nominater.username);
-	});
+  nominees.sort((a, b) => b.votes - a.votes);
+  _delete_all_nominee_cards();
+  console.log(nominees);
+  nominees.forEach((nom) => {
+    buildNominee(nom.name, nom.votes, nom.nominater.username);
+  });
 }
 
 /**
@@ -204,86 +202,74 @@ function sortNominees() {
  * this is to automatically set the username of the user
  */
 const sendUsername = () => {
-	if (socket && id && username.length > 0) {
-		const button = document.getElementById("connect");
-		const input = document.getElementById("username");
-		socket.send(JSON.stringify({ type: "GREET", id, username }));
-		button.onclick = () => {};
-		button.style.filter = "brightness(50%)";
-		button.innerText = "Welcome, trainer!";
-		input.disabled = true;
-	}
+  if (socket && id && username.length > 0) {
+    const button = document.getElementById("connect");
+    const input = document.getElementById("username");
+    socket.send(JSON.stringify({ type: "GREET", id, username }));
+    button.onclick = () => {};
+    button.style.filter = "brightness(50%)";
+    button.innerText = "Welcome, trainer!";
+    input.disabled = true;
+  }
 };
 
 /**
  * Helper function that updates nominees to newNominees, and also adds any
  * new nominees to the website UI.
  * @param {
-* 		name: string, 
-* 		votes: number, 
-* 		nominater: { 
-* 			username?: string | undefined;
-* 			id: string;
-* 			nominations: number;
-* 			votes: number;
-* 		};
-* 	}[] - newNominees - An array of all the currently nominated nominees
-*/
+ * 		name: string,
+ * 		votes: number,
+ * 		nominater: {
+ * 			username?: string | undefined;
+ * 			id: string;
+ * 			nominations: number;
+ * 			votes: number;
+ * 		};
+ * 	}[] - newNominees - An array of all the currently nominated nominees
+ */
 function updateNominees(newNominees) {
-	_myNominations = newNominees.filter(nominee => nominee.nominater.id === id).map(nominee => nominee.name)
-	// nomination occurred
-	if (nominees.length <= newNominees.length) {
-		newNominees.forEach((newNom) => {
-			const alreadyNominated = nominees.find(
-				(nom) => nom.name === newNom.name
-			);
-			// update votes map to include new votable entry
-			const nomineeAlreadyVotable = _myVotes.get(newNom.name);
-			if (!nomineeAlreadyVotable) {
-				_myVotes.set(newNom.name, 0);
-			}
-			if (alreadyNominated) {
-				// update votes on existing ui element
-				alreadyNominated.votes = newNom.votes;
-				const votesUI = document.getElementById(`${newNom.name}_votes`);
-				votesUI.innerText = `Votes: ${newNom.votes}`;
-				const nominaterUI = document.getElementById(
-					`${newNom.name}_nominater`
-				);
-				nominaterUI.innerText = `${newNom.nominater.username}`;
-				console.log(
-					"disabling ",
-					newNom.name,
-					" if NOT the nominater..."
-				);
-				_updateNominateButtonFunctionalityForNominee(newNom.name, true);
-			} else {
-				buildNominee(
-					newNom.name,
-					newNom.votes,
-					newNom.nominater.username
-				);
-				nominees.push(newNom);
-				_updateNominateButtonFunctionalityForNominee(newNom.name, true);
-			}
-		});
-	} else {
-		nominees.forEach((nom) => {
-			if (newNominees.every((newNom) => newNom.name !== nom.name)) {
-				nominees = nominees.filter((n) => n.name !== nom.name);
-				const cardToRemove = document.getElementById(
-					`${nom.name}_card`
-				);
-				cardToRemove.remove();
-				_updateNominateButtonFunctionalityForNominee(nom.name, false);
-			}
-			// remove from votes map as nominee is no longer votable
-			const nomineeAlreadyVotable = _myVotes.get(nom.name);
-			if (nomineeAlreadyVotable) {
-				_myVotes.delete(nom.name);
-			}
-		});
-	}
+  _myNominations = newNominees
+    .filter((nominee) => nominee.nominater.id === id)
+    .map((nominee) => nominee.name);
+  // nomination occurred
+  if (nominees.length <= newNominees.length) {
+    newNominees.forEach((newNom) => {
+      const alreadyNominated = nominees.find((nom) => nom.name === newNom.name);
+      // update votes map to include new votable entry
+      const nomineeAlreadyVotable = _myVotes.get(newNom.name);
+      if (!nomineeAlreadyVotable) {
+        _myVotes.set(newNom.name, 0);
+      }
+      if (alreadyNominated) {
+        // update votes on existing ui element
+        alreadyNominated.votes = newNom.votes;
+        const votesUI = document.getElementById(`${newNom.name}_votes`);
+        votesUI.innerText = `Votes: ${newNom.votes}`;
+        const nominaterUI = document.getElementById(`${newNom.name}_nominater`);
+        nominaterUI.innerText = `${newNom.nominater.username}`;
+        console.log("disabling ", newNom.name, " if NOT the nominater...");
+        _updateNominateButtonFunctionalityForNominee(newNom.name, true);
+      } else {
+        buildNominee(newNom.name, newNom.votes, newNom.nominater.username);
+        nominees.push(newNom);
+        _updateNominateButtonFunctionalityForNominee(newNom.name, true);
+      }
+    });
+  } else {
+    nominees.forEach((nom) => {
+      if (newNominees.every((newNom) => newNom.name !== nom.name)) {
+        nominees = nominees.filter((n) => n.name !== nom.name);
+        const cardToRemove = document.getElementById(`${nom.name}_card`);
+        cardToRemove.remove();
+        _updateNominateButtonFunctionalityForNominee(nom.name, false);
+      }
+      // remove from votes map as nominee is no longer votable
+      const nomineeAlreadyVotable = _myVotes.get(nom.name);
+      if (nomineeAlreadyVotable) {
+        _myVotes.delete(nom.name);
+      }
+    });
+  }
 }
 
 /**
@@ -291,8 +277,8 @@ function updateNominees(newNominees) {
  * @param {number} newVotesRemaining - the new amount of votes you have remaining to display
  */
 const updateVotesRemainingUI = (newVotesRemaining) => {
-	const votesRemainingUI = document.getElementById("votes-remaining");
-	votesRemainingUI.innerText = newVotesRemaining;
+  const votesRemainingUI = document.getElementById("votes-remaining");
+  votesRemainingUI.innerText = newVotesRemaining;
 };
 
 /**
@@ -300,10 +286,10 @@ const updateVotesRemainingUI = (newVotesRemaining) => {
  * @param {number} newNominationsRemaining - the new amount of nominations you have remaining to display
  */
 const updateNominationsRemainingUI = (newNominationsRemaining) => {
-	const nominationsRemainingUI = document.getElementById(
-		"nominations-remaining"
-	);
-	nominationsRemainingUI.innerText = newNominationsRemaining;
+  const nominationsRemainingUI = document.getElementById(
+    "nominations-remaining"
+  );
+  nominationsRemainingUI.innerText = newNominationsRemaining;
 };
 
 /**
@@ -313,7 +299,17 @@ const updateNominationsRemainingUI = (newNominationsRemaining) => {
  * @param {boolean} upvote - true if you are voting for the pokemon, false if voting against
  */
 function voteForPokemon(pokemon, upvote) {
-	// your code goes here!
+  // your code goes here!
+  if (id && username) {
+    socket.send(
+      JSON.stringify({
+        type: "VOTE",
+        candidate: pokemon,
+        voter: id,
+        upvote: upvote,
+      })
+    );
+  }
 }
 
 /**
@@ -323,7 +319,18 @@ function voteForPokemon(pokemon, upvote) {
  * @param {boolean} nominate - whether the user is nominating or unnominating the pokemon
  */
 function nominatePokemon(pokemon, nominate) {
-	// your code goes here!
+  if (id && nominate) {
+    socket.send(
+      JSON.stringify({
+        type: "NOMINATE",
+        nominee: pokemon,
+        nominater: id,
+        unnominate: !nominate,
+      })
+    );
+    console.log(pokemon);
+  }
+  // your code goes here!
 }
 
 /**
@@ -334,91 +341,100 @@ function nominatePokemon(pokemon, nominate) {
  * 		3. Handle when the client receives an "UPDATE" event
  */
 function connect() {
-	// only connect if the socket hasn't already connected, and a username is set
-	const timeOut = _set_connect_button_loading();
-	if (!socket && username.length > 0) {
-		/**
-		 * TODO: Write a line here opening a socket connection with the server, and assign
-		 * it to the socket variable!
-		 */
+  // only connect if the socket hasn't already connected, and a username is set
+  const timeOut = _set_connect_button_loading();
+  if (!socket && username.length > 0) {
+    /**
+     * TODO: Write a line here opening a socket connection with the server, and assign
+     * it to the socket variable!
+     */
 
-		
-		// heartbeat functionality - do NOT touch! D:<
-		socket.onopen = () => {
-			const button = document.getElementById("connect");
-			button.innerText = "Welcome, trainer!";
-			clearInterval(timeOut);
-		};
-		const heartbeat_message = {type: "HEARTBEAT"}
-		const timeout = setInterval(() => {
-			if (socket.readyState === WebSocket.OPEN) {
-				socket.send(JSON.stringify(heartbeat_message));
-				const sentTime = new Date().getTime();
-				if (!_heartbeat) {
-					_heartbeat = sentTime
-				}
-				if ((sentTime - _heartbeat) >= HEARTBEAT_EXPIRATION) {
-					// server hasn't responded for 30 seconds, close connection
-					socket.close();
-				} 
-			}
-		  }, HEARTBEAT_FREQUENCY); // send heartbeat every 10 seconds
-		
+    //create a socket object
+    socket = new WebSocket(URL);
+    console.log(socket);
 
-		socket.onmessage = (event) => {
-			// convert the event data to JSON
-			const eventData = dataToJSON(event.data);
-			// TODO: handle both the "NOMINEES" event, and the "UPDATE" event
-			switch (eventData.type) {
-				case "NOMINEES": {
-					/**
-					 * TODO: Write logic here handling when the client
-					 * receives a "NOMINEES" event from the server
-					 */
-					break;
-				}
-				case "UPDATE": {
-					/**
-					 * TODO: Write logic here handling when the client
-					 * receives a "UPDATE" event from the server
-					 */
-					break;
-				}
-				case "GREET": {
-					// This event code is already done for you! :D
-					// set the client-side id of the user
-					id = eventData.id;
-					// update nominees to the initial nominees sent by the server
-					updateNominees(eventData.nominees);
-					// send the username to the server
-					sendUsername();
-					break;
-				}
-				case "HEARTBEAT" : {
-					_heartbeat = new Date().getTime();
-					break;
-				}
-				case "IP_SPAM" : {
-					fun();
-					break;
-				}
-			}
-		};
+    // heartbeat functionality - do NOT touch! D:<
+    socket.onopen = () => {
+      const button = document.getElementById("connect");
+      button.innerText = "Welcome, trainer!";
+      clearInterval(timeOut);
+    };
+    const heartbeat_message = { type: "HEARTBEAT" };
+    const timeout = setInterval(() => {
+      if (socket.readyState === WebSocket.OPEN) {
+        socket.send(JSON.stringify(heartbeat_message));
+        const sentTime = new Date().getTime();
+        if (!_heartbeat) {
+          _heartbeat = sentTime;
+        }
+        if (sentTime - _heartbeat >= HEARTBEAT_EXPIRATION) {
+          // server hasn't responded for 30 seconds, close connection
+          socket.close();
+        }
+      }
+    }, HEARTBEAT_FREQUENCY); // send heartbeat every 10 seconds
 
-		// cleanup for when the connection closes - do not touch! D:<
-		socket.onclose = () => {
-			alert("The connection has been closed :(\nRefresh the page and re-connect to the server")
-			// stop sending heartbeat on close
-			clearInterval(timeout);
-			socket = null;
-			const button = document.getElementById("connect");
-			const input = document.getElementById("username");
-			button.onClick = connect;
-			button.innerText = "Join the Indigo League!";
-			input.disabled = false;
-			input.style.filter = "brightness(100%)";
-		};
-	}
+    socket.onmessage = (event) => {
+      // convert the event data to JSON
+      const eventData = dataToJSON(event.data);
+      // TODO: handle both the "NOMINEES" event, and the "UPDATE" event
+      switch (eventData.type) {
+        case "NOMINEES": {
+          /**
+           * TODO: Write logic here handling when the client
+           * receives a "NOMINEES" event from the server
+           */
+          updateNominees(eventData.nominees);
+          break;
+        }
+        case "UPDATE": {
+          /**
+           * TODO: Write logic here handling when the client
+           * receives a "UPDATE" event from the server
+           */
+          updateNominationsRemainingUI(eventData.user.nominations);
+          nominations = eventData.user.nominations;
+          updateVotesRemainingUI(eventData.user.votes);
+          votes = eventData.user.votes;
+          break;
+        }
+        case "GREET": {
+          // This event code is already done for you! :D
+          // set the client-side id of the user
+          id = eventData.id;
+          // update nominees to the initial nominees sent by the server
+          updateNominees(eventData.nominees);
+          // send the username to the server
+          sendUsername();
+          break;
+        }
+        case "HEARTBEAT": {
+          _heartbeat = new Date().getTime();
+          break;
+        }
+        case "IP_SPAM": {
+          fun();
+          break;
+        }
+      }
+    };
+
+    // cleanup for when the connection closes - do not touch! D:<
+    socket.onclose = () => {
+      alert(
+        "The connection has been closed :(\nRefresh the page and re-connect to the server"
+      );
+      // stop sending heartbeat on close
+      clearInterval(timeout);
+      socket = null;
+      const button = document.getElementById("connect");
+      const input = document.getElementById("username");
+      button.onClick = connect;
+      button.innerText = "Join the Indigo League!";
+      input.disabled = false;
+      input.style.filter = "brightness(100%)";
+    };
+  }
 }
 
 /**
@@ -428,8 +444,8 @@ function connect() {
  * @param {HTMLButtonElement} cardNominate - the button that this function is running on
  */
 const nominateOnClick = (name, cardNominate) => {
-	nominatePokemon(name, true);
-	_switch_to_rescind_button(cardNominate);
+  nominatePokemon(name, true);
+  _switch_to_rescind_button(cardNominate);
 };
 
 /**
@@ -439,22 +455,22 @@ const nominateOnClick = (name, cardNominate) => {
  * @param {HTMLButtonElement} cardNominate - the button that this function is running on
  */
 const unnominateOnClick = (name, cardNominate) => {
-	nominatePokemon(name, false);
-	_switch_to_nominate_button(cardNominate);
+  nominatePokemon(name, false);
+  _switch_to_nominate_button(cardNominate);
 };
 
 /**
  * @param {string} name - the name of the pokemon you are voting for
  */
 const upvoteOnClick = (name) => {
-	voteForPokemon(name, true);
+  voteForPokemon(name, true);
 };
 
 /**
  * @param {string} name - the name of the pokemon you are rescinding a vote from
  */
 const downvoteOnClick = (name) => {
-	voteForPokemon(name, false);
+  voteForPokemon(name, false);
 };
 
 /**
@@ -462,60 +478,60 @@ const downvoteOnClick = (name) => {
  * @param {HTMLOnChangeEvent} event - the onChange event for this input field
  */
 const usernameOnChange = (event) => {
-	username = event.target.value;
-	const connectButton = document.getElementById("connect");
-	if (socket && id) {
-		if (username.length !== 0) {
-			connectButton.style.filter = "brightness(100%)";
-			connectButton.onclick = changeUsername;
-		} else {
-			connectButton.style.filter = "brightness(50%)";
-			connectButton.onclick = () => {};
-		}
-	}
+  username = event.target.value;
+  const connectButton = document.getElementById("connect");
+  if (socket && id) {
+    if (username.length !== 0) {
+      connectButton.style.filter = "brightness(100%)";
+      connectButton.onclick = changeUsername;
+    } else {
+      connectButton.style.filter = "brightness(50%)";
+      connectButton.onclick = () => {};
+    }
+  }
 };
 
 async function getPokemon() {
-	const pokemon = _only_fetch_as_needed(retrieveInputs());
-	for (let i = 0; i < pokemon.length; i++) {
-		const response = await fetch(
-			`https://pokeapi.co/api/v2/pokemon/${pokemon[i]}/`
-		);
-		if (!response.ok) {
-			console.error(`Could not fetch ${pokemon[i]} from pokeapi :(`);
-			continue;
-		}
-		const data = await response.json();
-		console.log(data);
+  const pokemon = _only_fetch_as_needed(retrieveInputs());
+  for (let i = 0; i < pokemon.length; i++) {
+    const response = await fetch(
+      `https://pokeapi.co/api/v2/pokemon/${pokemon[i]}/`
+    );
+    if (!response.ok) {
+      console.error(`Could not fetch ${pokemon[i]} from pokeapi :(`);
+      continue;
+    }
+    const data = await response.json();
+    console.log(data);
 
-		buildCard(
-			data.name,
-			data.types,
-			data.stats[0].base_stat,
-			data.stats[1].base_stat,
-			data.stats[2].base_stat,
-			data.stats[3].base_stat,
-			data.stats[4].base_stat,
-			data.stats[5].base_stat,
-			data.abilities,
-			data.height,
-			data.weight,
-			data.sprites.front_default
-		);
-	}
+    buildCard(
+      data.name,
+      data.types,
+      data.stats[0].base_stat,
+      data.stats[1].base_stat,
+      data.stats[2].base_stat,
+      data.stats[3].base_stat,
+      data.stats[4].base_stat,
+      data.stats[5].base_stat,
+      data.abilities,
+      data.height,
+      data.weight,
+      data.sprites.front_default
+    );
+  }
 }
 
 function _only_fetch_as_needed(pokemon) {
-	const noDuplicates = [...new Set(pokemon)];
-	pokemonToFetch = [];
-	noDuplicates.forEach((name) => {
-		console.log(name);
-		fetchedPokemonCard = document.getElementById(`${name}_fetched_card`);
-		if (!fetchedPokemonCard) {
-			pokemonToFetch.push(name);
-		}
-	});
-	return pokemonToFetch;
+  const noDuplicates = [...new Set(pokemon)];
+  pokemonToFetch = [];
+  noDuplicates.forEach((name) => {
+    console.log(name);
+    fetchedPokemonCard = document.getElementById(`${name}_fetched_card`);
+    if (!fetchedPokemonCard) {
+      pokemonToFetch.push(name);
+    }
+  });
+  return pokemonToFetch;
 }
 
 /**
@@ -534,208 +550,208 @@ function _only_fetch_as_needed(pokemon) {
  * @param {string} image_url - the url to an in-game sprite used for the pokemon
  */
 function buildCard(
-	name,
-	types,
-	hp,
-	attack,
-	defense,
-	special_attack,
-	special_defense,
-	speed,
-	abilities,
-	height,
-	weight,
-	image_url,
-	anchor = "cardContainer"
+  name,
+  types,
+  hp,
+  attack,
+  defense,
+  special_attack,
+  special_defense,
+  speed,
+  abilities,
+  height,
+  weight,
+  image_url,
+  anchor = "cardContainer"
 ) {
-	const card = document.createElement("div");
-	card.className = "card";
-	card.id = `${name}_fetched_card`;
+  const card = document.createElement("div");
+  card.className = "card";
+  card.id = `${name}_fetched_card`;
 
-	const cardImage = document.createElement("img");
-	cardImage.src = image_url;
-	card.placeholder = `Image of the pokemon: "${name.toUpperCase()}"`;
-	card.appendChild(cardImage);
+  const cardImage = document.createElement("img");
+  cardImage.src = image_url;
+  card.placeholder = `Image of the pokemon: "${name.toUpperCase()}"`;
+  card.appendChild(cardImage);
 
-	const cardName = document.createElement("h1");
-	cardName.innerHTML = name.toUpperCase();
-	card.appendChild(cardName);
+  const cardName = document.createElement("h1");
+  cardName.innerHTML = name.toUpperCase();
+  card.appendChild(cardName);
 
-	const cardTypeTitle = document.createElement("h2");
-	cardTypeTitle.innerHTML = `<strong>Types</strong>`;
-	card.appendChild(cardTypeTitle);
-	const cardTypesList = document.createElement("ul");
-	for (let i = 0; i < types.length; i++) {
-		const li = document.createElement("li");
-		li.innerHTML = types[i].type.name;
-		cardTypesList.appendChild(li);
-	}
-	card.appendChild(cardTypesList);
+  const cardTypeTitle = document.createElement("h2");
+  cardTypeTitle.innerHTML = `<strong>Types</strong>`;
+  card.appendChild(cardTypeTitle);
+  const cardTypesList = document.createElement("ul");
+  for (let i = 0; i < types.length; i++) {
+    const li = document.createElement("li");
+    li.innerHTML = types[i].type.name;
+    cardTypesList.appendChild(li);
+  }
+  card.appendChild(cardTypesList);
 
-	const cardAbilitiesListTitle = document.createElement("h2");
-	cardAbilitiesListTitle.innerHTML = "<strong>Abilities<strong>";
-	card.appendChild(cardAbilitiesListTitle);
-	const cardAbilitiesList = document.createElement("ul");
-	for (let i = 0; i < abilities.length; i++) {
-		const li = document.createElement("li");
-		li.innerHTML = abilities[i].ability.name;
-		cardAbilitiesList.appendChild(li);
-	}
-	card.appendChild(cardAbilitiesList);
+  const cardAbilitiesListTitle = document.createElement("h2");
+  cardAbilitiesListTitle.innerHTML = "<strong>Abilities<strong>";
+  card.appendChild(cardAbilitiesListTitle);
+  const cardAbilitiesList = document.createElement("ul");
+  for (let i = 0; i < abilities.length; i++) {
+    const li = document.createElement("li");
+    li.innerHTML = abilities[i].ability.name;
+    cardAbilitiesList.appendChild(li);
+  }
+  card.appendChild(cardAbilitiesList);
 
-	const cardStatisticsTitle = document.createElement("h2");
-	cardStatisticsTitle.innerHTML = "<strong>Stats<strong>";
-	card.appendChild(cardStatisticsTitle);
+  const cardStatisticsTitle = document.createElement("h2");
+  cardStatisticsTitle.innerHTML = "<strong>Stats<strong>";
+  card.appendChild(cardStatisticsTitle);
 
-	const cardStatisticsTable = document.createElement("table");
-	const tr1 = document.createElement("tr");
-	tr1.innerHTML = `<td><strong>Attack: <strong>${attack}</strong></td>
+  const cardStatisticsTable = document.createElement("table");
+  const tr1 = document.createElement("tr");
+  tr1.innerHTML = `<td><strong>Attack: <strong>${attack}</strong></td>
     <td><strong>Defense: <strong>${defense}</strong></td>`;
-	cardStatisticsTable.appendChild(tr1);
+  cardStatisticsTable.appendChild(tr1);
 
-	const tr2 = document.createElement("tr");
-	tr2.innerHTML = `<td><strong>Sp. Atk: <strong>${special_attack}</strong></td>
+  const tr2 = document.createElement("tr");
+  tr2.innerHTML = `<td><strong>Sp. Atk: <strong>${special_attack}</strong></td>
     <td><strong>Sp. Def: <strong>${special_defense}</strong></td>`;
-	cardStatisticsTable.appendChild(tr2);
+  cardStatisticsTable.appendChild(tr2);
 
-	const tr3 = document.createElement("tr");
-	tr3.innerHTML = `<td><strong>HP: <strong>${hp}</strong></td>
+  const tr3 = document.createElement("tr");
+  tr3.innerHTML = `<td><strong>HP: <strong>${hp}</strong></td>
     <td><strong>Speed: <strong>${speed}</strong></td>`;
-	cardStatisticsTable.appendChild(tr3);
+  cardStatisticsTable.appendChild(tr3);
 
-	card.appendChild(cardStatisticsTable);
+  card.appendChild(cardStatisticsTable);
 
-	const cardMiscStatsContainer = document.createElement("div");
-	const cardHeight = document.createElement("caption");
-	cardHeight.innerHTML = `<strong>Height: </strong>${
-		Math.round(height * 10) / 100
-	} m`;
-	cardMiscStatsContainer.appendChild(cardHeight);
-	const cardWeight = document.createElement("caption");
-	cardWeight.innerHTML = `<strong>Weight: </strong>${
-		Math.round(weight * 10) / 100
-	} kg`;
-	cardMiscStatsContainer.appendChild(cardWeight);
-	card.appendChild(cardMiscStatsContainer);
+  const cardMiscStatsContainer = document.createElement("div");
+  const cardHeight = document.createElement("caption");
+  cardHeight.innerHTML = `<strong>Height: </strong>${
+    Math.round(height * 10) / 100
+  } m`;
+  cardMiscStatsContainer.appendChild(cardHeight);
+  const cardWeight = document.createElement("caption");
+  cardWeight.innerHTML = `<strong>Weight: </strong>${
+    Math.round(weight * 10) / 100
+  } kg`;
+  cardMiscStatsContainer.appendChild(cardWeight);
+  card.appendChild(cardMiscStatsContainer);
 
-	// vote and nominate buttons
-	const cardNominateAndVoteContainer = document.createElement("div");
-	const cardNominate = document.createElement("button");
-	cardNominate.id = `${name}_fetched_nominate`;
-	cardNominate.innerText = "Nominate";
-	const nomOnClick = () => {
-		nominateOnClick(name, cardNominate);
-		cardNominate.onclick = () => {
-			unnominateOnClick(name, cardNominate);
-			cardNominate.onclick = nomOnClick;
-		};
-	};
-	cardNominate.onclick = nomOnClick;
-	console.log(nominees);
-	if (nominees.some((nom) => nom.name === name)) {
-		console.log("disabling nomination ability for ", name);
-		cardNominate.disabled = true;
-		cardNominate.style.filter = "brightness(50%)";
-	}
-	cardNominateAndVoteContainer.appendChild(cardNominate);
-	// OLD - vote button on fetched card
-	// const cardVote = document.createElement("button");
-	// cardVote.innerText = "Vote";
-	// cardVote.classList.add("vote");
-	// const voteOnClick = () => {
-	// 	upvoteOnClick(name, cardVote);
-	// 	cardVote.onclick = () => {
-	// 		downvoteOnClick(name, cardVote);
-	// 		cardVote.onclick = voteOnClick;
-	// 	};
-	// };
-	// cardVote.onclick = voteOnClick;
-	// cardNominateAndVoteContainer.appendChild(cardVote);
-	card.appendChild(cardNominateAndVoteContainer);
+  // vote and nominate buttons
+  const cardNominateAndVoteContainer = document.createElement("div");
+  const cardNominate = document.createElement("button");
+  cardNominate.id = `${name}_fetched_nominate`;
+  cardNominate.innerText = "Nominate";
+  const nomOnClick = () => {
+    nominateOnClick(name, cardNominate);
+    cardNominate.onclick = () => {
+      unnominateOnClick(name, cardNominate);
+      cardNominate.onclick = nomOnClick;
+    };
+  };
+  cardNominate.onclick = nomOnClick;
+  console.log(nominees);
+  if (nominees.some((nom) => nom.name === name)) {
+    console.log("disabling nomination ability for ", name);
+    cardNominate.disabled = true;
+    cardNominate.style.filter = "brightness(50%)";
+  }
+  cardNominateAndVoteContainer.appendChild(cardNominate);
+  // OLD - vote button on fetched card
+  // const cardVote = document.createElement("button");
+  // cardVote.innerText = "Vote";
+  // cardVote.classList.add("vote");
+  // const voteOnClick = () => {
+  // 	upvoteOnClick(name, cardVote);
+  // 	cardVote.onclick = () => {
+  // 		downvoteOnClick(name, cardVote);
+  // 		cardVote.onclick = voteOnClick;
+  // 	};
+  // };
+  // cardVote.onclick = voteOnClick;
+  // cardNominateAndVoteContainer.appendChild(cardVote);
+  card.appendChild(cardNominateAndVoteContainer);
 
-	const cardContainer = document.getElementById(anchor);
-	cardContainer.append(card);
+  const cardContainer = document.getElementById(anchor);
+  cardContainer.append(card);
 
-	if (nominees.some((nom) => nom.name === name)) {
-		_updateNominateButtonFunctionalityForNominee(name, true);
-	}
+  if (nominees.some((nom) => nom.name === name)) {
+    _updateNominateButtonFunctionalityForNominee(name, true);
+  }
 }
 
 function buildNominee(name, votes, nominater) {
-	const card = document.createElement("div");
-	const nomineeName = document.createElement("h1");
-	const nomineeVotes = document.createElement("h2");
-	const nomineeNominaterContainer = document.createElement("div");
-	const nomineeNominaterText = document.createElement("p");
-	const nomineeNominater = document.createElement("p");
-	const voteButtonsContainer = document.createElement("div");
-	const upVoteButton = document.createElement("button");
-	const downVoteButton = document.createElement("button");
-	const upVoteOnClickHandler = () => {
-		upvoteOnClick(name);
-	};
-	upVoteButton.onclick = upVoteOnClickHandler;
-	const downVoteOnClickHandler = () => {
-		downvoteOnClick(name);
-	};
-	downVoteButton.onclick = downVoteOnClickHandler;
-	card.id = `${name}_card`;
-	nomineeVotes.id = `${name}_votes`;
-	card.classList.add("card");
-	upVoteButton.classList.add("upvote");
-	upVoteButton.innerText = "+ Vote";
-	upVoteButton.id = `${name}_upvote`;
-	downVoteButton.classList.add("downvote");
-	downVoteButton.innerText = "- Vote";
-	downVoteButton.id = `${name}_downvote`;
-	nomineeVotes.innerText = `Votes: ${votes}`;
-	nomineeName.innerText = name;
-	nomineeNominaterText.innerText = "Nominated by:";
-	nomineeNominater.innerText = `${nominater}`;
-	nomineeNominater.id = `${name}_nominater`;
-	nomineeNominater.classList.add("nominater");
-	const isMyNomination = _myNominations.some(myNom => myNom === name);
-	if (isMyNomination) {
-		upVoteButton.style.filter = "brightness(50%)";
-		downVoteButton.style.filter = "brightness(50%)";
-		upVoteButton.disabled = true
-		downVoteButton.disabled = true
-	}
-	nomineeNominaterContainer.appendChild(nomineeNominaterText);
-	nomineeNominaterContainer.appendChild(nomineeNominater);
-	voteButtonsContainer.appendChild(upVoteButton);
-	voteButtonsContainer.appendChild(downVoteButton);
-	card.appendChild(nomineeName);
-	card.appendChild(nomineeNominaterContainer);
-	card.appendChild(nomineeVotes);
-	card.appendChild(voteButtonsContainer);
+  const card = document.createElement("div");
+  const nomineeName = document.createElement("h1");
+  const nomineeVotes = document.createElement("h2");
+  const nomineeNominaterContainer = document.createElement("div");
+  const nomineeNominaterText = document.createElement("p");
+  const nomineeNominater = document.createElement("p");
+  const voteButtonsContainer = document.createElement("div");
+  const upVoteButton = document.createElement("button");
+  const downVoteButton = document.createElement("button");
+  const upVoteOnClickHandler = () => {
+    upvoteOnClick(name);
+  };
+  upVoteButton.onclick = upVoteOnClickHandler;
+  const downVoteOnClickHandler = () => {
+    downvoteOnClick(name);
+  };
+  downVoteButton.onclick = downVoteOnClickHandler;
+  card.id = `${name}_card`;
+  nomineeVotes.id = `${name}_votes`;
+  card.classList.add("card");
+  upVoteButton.classList.add("upvote");
+  upVoteButton.innerText = "+ Vote";
+  upVoteButton.id = `${name}_upvote`;
+  downVoteButton.classList.add("downvote");
+  downVoteButton.innerText = "- Vote";
+  downVoteButton.id = `${name}_downvote`;
+  nomineeVotes.innerText = `Votes: ${votes}`;
+  nomineeName.innerText = name;
+  nomineeNominaterText.innerText = "Nominated by:";
+  nomineeNominater.innerText = `${nominater}`;
+  nomineeNominater.id = `${name}_nominater`;
+  nomineeNominater.classList.add("nominater");
+  const isMyNomination = _myNominations.some((myNom) => myNom === name);
+  if (isMyNomination) {
+    upVoteButton.style.filter = "brightness(50%)";
+    downVoteButton.style.filter = "brightness(50%)";
+    upVoteButton.disabled = true;
+    downVoteButton.disabled = true;
+  }
+  nomineeNominaterContainer.appendChild(nomineeNominaterText);
+  nomineeNominaterContainer.appendChild(nomineeNominater);
+  voteButtonsContainer.appendChild(upVoteButton);
+  voteButtonsContainer.appendChild(downVoteButton);
+  card.appendChild(nomineeName);
+  card.appendChild(nomineeNominaterContainer);
+  card.appendChild(nomineeVotes);
+  card.appendChild(voteButtonsContainer);
 
-	const anchor = document.getElementById("voting");
-	anchor.appendChild(card);
+  const anchor = document.getElementById("voting");
+  anchor.appendChild(card);
 }
 
 function retrieveInputs() {
-	const inputs = [];
-	for (let i = 1; i < 6; i++) {
-		const currInput = document.getElementById(`pkmn ${i}`);
+  const inputs = [];
+  for (let i = 1; i < 6; i++) {
+    const currInput = document.getElementById(`pkmn ${i}`);
 
-		if (!(currInput.value === "")) {
-			inputs.push(currInput.value);
-			currInput.value = "";
-		}
-	}
-	return inputs;
+    if (!(currInput.value === "")) {
+      inputs.push(currInput.value);
+      currInput.value = "";
+    }
+  }
+  return inputs;
 }
 
 // function to be used in the "get pokemon button". Do not modify this function
 function onClick() {
-	getPokemon();
+  getPokemon();
 }
 
 ["pkmn 1", "pkmn 2", "pkmn 3", "pkmn 4", "pkmn 5"].forEach((id) => {
-	document.getElementById(id).addEventListener("keyup", (e) => {
-		if (e.code === "Enter") {
-			document.getElementById("submit").click();
-		}
-	});
+  document.getElementById(id).addEventListener("keyup", (e) => {
+    if (e.code === "Enter") {
+      document.getElementById("submit").click();
+    }
+  });
 });
